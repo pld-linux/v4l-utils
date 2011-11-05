@@ -1,4 +1,5 @@
-Summary:	Collection of video4linux utilities
+Summary:	Collection of Video4Linux utilities
+Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
 Version:	0.8.5
 Release:	1
@@ -9,7 +10,6 @@ Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtGui-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	sysfsutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -17,16 +17,26 @@ A series of utilities for media devices, allowing to handle the
 proprietary formats available at most webcams (libv4l), and providing
 tools to test V4L devices.
 
+%description -l pl.UTF-8
+Zbiór narzędzi do urządzeń multimedialnych, pozwalający obsługiwać
+własnościowe formaty dostępne w większości kamer internetowych
+(libv4l) oraz testować urządzenia V4L.
+
 %package qt
-Summary:	Qt V4L2 test Utility
+Summary:	Qt-based V4L2 test Utility
+Summary(pl.UTF-8):	Narzędzie testowe V4L2 oparte na Qt
 License:	GPL v2+
 Group:		X11/Applications
 
 %description qt
-Graphical Qt v4l2 control panel.
+Graphical Qt V4L2 control panel.
+
+%description qt -l pl.UTF-8
+Graficzny panel kontrolny V4L2 oparty na Qt.
 
 %package -n ir-keytable
 Summary:	Alter keymaps of Remote Controller devices
+Summary(pl.UTF-8):	Zmiana map klawiszy urządzeń do zdalnego sterowania
 License:	GPL v2+
 Group:		Applications/Console
 
@@ -35,7 +45,15 @@ Dump, Load or Modify IR receiver input tables. This package allows one
 to change the keymap of controller receivers. Those receivers are
 found as infrared receivers on DVB sticks or on framegrabber cards.
 Via ir-keytable the mapping from a scancode to the generated event can
-be customized and made persistent
+be customized and made persistent.
+
+%description -n ir-keytable -l pl.UTF-8
+ir-keytable to narzędzie pozwalające na zrzucanie, wczytywanie i
+modyfikowanie tablic wejściowych odbiorników podczerwieni (IR). Ten
+pakiet pozwala na zmianę tablic klawiszy odbiorników pilotów.
+Odbiorniki podczerwieni występują na interfejsach DVB lub kartach
+framegrabberów. Dzięki użyciu ir-keytable można zmienić i zachować
+odwzorowania między skankodami a generowanymi zdarzeniami.
 
 %package -n libv4l
 Summary:	Abstraction layer on top of video4linux2 devices
@@ -79,7 +97,9 @@ Pliki nagłówkowe bibliotek libv4l.
 %build
 %{__make} \
 	CC="%{__cc}" \
+	CXX="%{__cxx}" \
 	CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall" \
+	CXXFLAGS="%{rpmcppflags} %{rpmcxxflags} -Wall" \
 	LDFLAGS="%{rpmcflags} %{rpmldflags}"
 
 %install
@@ -102,8 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO contrib
-%attr(755,root,root) %{_bindir}/*-ctl
+%attr(755,root,root) %{_bindir}/cx18-ctl
 %attr(755,root,root) %{_bindir}/decode_tm6000
+%attr(755,root,root) %{_bindir}/ivtv-ctl
 %attr(755,root,root) %{_bindir}/rds-saa6588
 %attr(755,root,root) %{_bindir}/v4l2-*
 %attr(755,root,root) %{_bindir}/xc3028-firmware
@@ -117,19 +138,28 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n ir-keytable
 %defattr(644,root,root,755)
-%config(noreplace) %{_sysconfdir}/rc_*
+%dir %{_sysconfdir}/rc_keymaps
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rc_keymaps/*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rc_maps.cfg
 /lib/udev/rules.d/70-infrared.rules
 %attr(755,root,root) %{_bindir}/ir-keytable
 %{_mandir}/man1/ir-keytable.1*
 
 %files -n libv4l
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libv4l*.so.0
-%attr(755,root,root) %{_libdir}/libv4l
+%attr(755,root,root) %{_libdir}/libv4l1.so.0
+%attr(755,root,root) %{_libdir}/libv4l2.so.0
+%attr(755,root,root) %{_libdir}/libv4lconvert.so.0
+%dir %{_libdir}/libv4l
+%attr(755,root,root) %{_libdir}/libv4l/*
 
 %files -n libv4l-devel
 %defattr(644,root,root,755)
 %doc README.lib*
-%attr(755,root,root) %{_libdir}/libv4l*.so
+%attr(755,root,root) %{_libdir}/libv4l1.so
+%attr(755,root,root) %{_libdir}/libv4l2.so
+%attr(755,root,root) %{_libdir}/libv4lconvert.so
 %{_includedir}/libv4l*.h
-%{_pkgconfigdir}/libv4l*.pc
+%{_pkgconfigdir}/libv4l1.pc
+%{_pkgconfigdir}/libv4l2.pc
+%{_pkgconfigdir}/libv4lconvert.pc
