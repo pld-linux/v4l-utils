@@ -1,12 +1,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	0.8.6
+Version:	0.8.7
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	80062780ae90e5955473b09b31e9828a
+# Source0-md5:	d3506785ae022b6a37b986c66015bea3
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtGui-devel
 BuildRequires:	libjpeg-devel
@@ -125,6 +125,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog README TODO contrib
 %attr(755,root,root) %{_bindir}/cx18-ctl
 %attr(755,root,root) %{_bindir}/decode_tm6000
+%attr(755,root,root) %{_bindir}/dvb-fe-tool
+%attr(755,root,root) %{_bindir}/dvb-format-convert
+%attr(755,root,root) %{_bindir}/dvbv5-scan
+%attr(755,root,root) %{_bindir}/dvbv5-zap
 %attr(755,root,root) %{_bindir}/ivtv-ctl
 %attr(755,root,root) %{_bindir}/rds-saa6588
 %attr(755,root,root) %{_bindir}/v4l2-*
