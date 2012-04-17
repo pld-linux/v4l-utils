@@ -1,12 +1,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	0.8.7
+Version:	0.8.8
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	d3506785ae022b6a37b986c66015bea3
+# Source0-md5:	40fdda3f4055ed818012d7a7b5ef5be5
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtGui-devel
 BuildRequires:	libjpeg-devel
