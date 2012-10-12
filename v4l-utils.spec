@@ -1,16 +1,22 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	0.8.8
+Version:	0.9.1
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	40fdda3f4055ed818012d7a7b5ef5be5
+# Source0-md5:	dce548c1b497a39e59bb52387cf18dc1
 URL:		http://hansdegoede.livejournal.com/
-BuildRequires:	QtGui-devel
+BuildRequires:	QtCore-devel >= 4.4
+BuildRequires:	QtGui-devel >= 4.4
+BuildRequires:	gettext-devel >= 0.17
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
+BuildRequires:	pkgconfig
+BuildRequires:	qt4-build >= 4.4
+BuildRequires:	xorg-lib-libX11-devel
+Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -28,6 +34,9 @@ Summary:	Qt-based V4L2 test Utility
 Summary(pl.UTF-8):	Narzędzie testowe V4L2 oparte na Qt
 License:	GPL v2+
 Group:		X11/Applications
+Requires:	QtCore-devel >= 4.4
+Requires:	QtGui-devel >= 4.4
+Requires:	libv4l = %{version}-%{release}
 
 %description qt
 Graphical Qt V4L2 control panel.
@@ -88,31 +97,43 @@ Header files for libv4l libraries.
 %description -n libv4l-devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek libv4l.
 
+%package -n libv4l-static
+Summary:	Static libv4l libraries
+Summary(pl.UTF-8):	Statyczne biblioteki libv4l
+License:	LGPL v2.1+
+Group:		Development/Libraries
+Requires:	libv4l-devel = %{version}-%{release}
+
+%description -n libv4l-static
+Static libv4l libraries.
+
+%description -n libv4l-static -l pl.UTF-8
+Statyczne biblioteki libv4l.
+
 %prep
 %setup -q
 
-%if "%{pld_release}" == "ac"
-%{__sed} -i 's/-fvisibility=hidden//' */Makefile
-%endif
-
 %build
-%{__make} \
-	CC="%{__cc}" \
-	CXX="%{__cxx}" \
-	CFLAGS="%{rpmcppflags} %{rpmcflags} -Wall" \
-	CXXFLAGS="%{rpmcppflags} %{rpmcxxflags} -Wall" \
-	LDFLAGS="%{rpmcflags} %{rpmldflags}"
+%configure \
+	--disable-silent-rules
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install utils/rds/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
 install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
+
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{capture-example,stress-buffer}
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{driver,ioctl,pixfmt,sliced-vbi,vbi}-test
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
+# dlopened modules
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -130,8 +151,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dvbv5-scan
 %attr(755,root,root) %{_bindir}/dvbv5-zap
 %attr(755,root,root) %{_bindir}/ivtv-ctl
+%attr(755,root,root) %{_bindir}/rds-ctl
 %attr(755,root,root) %{_bindir}/rds-saa6588
-%attr(755,root,root) %{_bindir}/v4l2-*
+%attr(755,root,root) %{_bindir}/sliced-vbi-detect
+%attr(755,root,root) %{_bindir}/v4l2-compliance
+%attr(755,root,root) %{_bindir}/v4l2-ctl
+%attr(755,root,root) %{_bindir}/v4l2-sysfs-path
+%attr(755,root,root) %{_bindir}/v4l2grab
+%attr(755,root,root) %{_bindir}/v4lgrab
 %attr(755,root,root) %{_bindir}/xc3028-firmware
 %attr(755,root,root) %{_sbindir}/v4l2-dbg
 
@@ -144,27 +171,52 @@ rm -rf $RPM_BUILD_ROOT
 %files -n ir-keytable
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/rc_keymaps
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rc_keymaps/*
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rc_maps.cfg
+/lib/udev/rc_keymaps
 /lib/udev/rules.d/70-infrared.rules
 %attr(755,root,root) %{_bindir}/ir-keytable
 %{_mandir}/man1/ir-keytable.1*
 
 %files -n libv4l
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libv4l1.so.0
-%attr(755,root,root) %{_libdir}/libv4l2.so.0
-%attr(755,root,root) %{_libdir}/libv4lconvert.so.0
+%attr(755,root,root) %{_libdir}/libdvbv5.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdvbv5.so.0
+%attr(755,root,root) %{_libdir}/libv4l1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libv4l1.so.0
+%attr(755,root,root) %{_libdir}/libv4l2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libv4l2.so.0
+%attr(755,root,root) %{_libdir}/libv4l2rds.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libv4l2rds.so.0
+%attr(755,root,root) %{_libdir}/libv4lconvert.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libv4lconvert.so.0
+%attr(755,root,root) %{_libdir}/v4l1compat.so
+%attr(755,root,root) %{_libdir}/v4l2convert.so
 %dir %{_libdir}/libv4l
-%attr(755,root,root) %{_libdir}/libv4l/*
+%attr(755,root,root) %{_libdir}/libv4l/ov511-decomp
+%attr(755,root,root) %{_libdir}/libv4l/ov518-decomp
+%attr(755,root,root) %{_libdir}/libv4l/v4l1compat.so
+%attr(755,root,root) %{_libdir}/libv4l/v4l2convert.so
 
 %files -n libv4l-devel
 %defattr(644,root,root,755)
 %doc README.lib*
+%attr(755,root,root) %{_libdir}/libdvbv5.so
 %attr(755,root,root) %{_libdir}/libv4l1.so
 %attr(755,root,root) %{_libdir}/libv4l2.so
+%attr(755,root,root) %{_libdir}/libv4l2rds.so
 %attr(755,root,root) %{_libdir}/libv4lconvert.so
 %{_includedir}/libv4l*.h
+%{_includedir}/dvb-*.h
+%{_pkgconfigdir}/libdvbv5.pc
 %{_pkgconfigdir}/libv4l1.pc
 %{_pkgconfigdir}/libv4l2.pc
+%{_pkgconfigdir}/libv4l2rds.pc
 %{_pkgconfigdir}/libv4lconvert.pc
+
+%files -n libv4l-static
+%defattr(644,root,root,755)
+%{_libdir}/libdvbv5.a
+%{_libdir}/libv4l1.a
+%{_libdir}/libv4l2.a
+%{_libdir}/libv4l2rds.a
+%{_libdir}/libv4lconvert.a
