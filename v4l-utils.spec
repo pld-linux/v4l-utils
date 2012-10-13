@@ -138,6 +138,14 @@ install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-fir
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+# handle transition from libv4l 0.8.x (.so.0 used to be libraries, not symlinks)
+%pretrans -n libv4l
+for f in libv4l1 libv4l2 libv4lconvert ; do
+	if [ ! -h %{_libdir}/${f}.so.0 ]; then
+		rm -f %{_libdir}/${f}.so.0
+	fi
+done
+
 %post   -n libv4l -p /sbin/ldconfig
 %postun -n libv4l -p /sbin/ldconfig
 
