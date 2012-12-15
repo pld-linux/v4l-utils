@@ -1,12 +1,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	0.9.1
+Version:	0.9.3
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	dce548c1b497a39e59bb52387cf18dc1
+# Source0-md5:	f4d24bb9f0307345d5a8fc4febcb993d
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtCore-devel >= 4.4
 BuildRequires:	QtGui-devel >= 4.4
@@ -127,13 +127,11 @@ rm -rf $RPM_BUILD_ROOT
 install utils/rds/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
 install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
 
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/{capture-example,stress-buffer}
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/{driver,ioctl,pixfmt,sliced-vbi,vbi}-test
-
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
 # dlopened modules
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/plugins/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -161,12 +159,9 @@ done
 %attr(755,root,root) %{_bindir}/ivtv-ctl
 %attr(755,root,root) %{_bindir}/rds-ctl
 %attr(755,root,root) %{_bindir}/rds-saa6588
-%attr(755,root,root) %{_bindir}/sliced-vbi-detect
 %attr(755,root,root) %{_bindir}/v4l2-compliance
 %attr(755,root,root) %{_bindir}/v4l2-ctl
 %attr(755,root,root) %{_bindir}/v4l2-sysfs-path
-%attr(755,root,root) %{_bindir}/v4l2grab
-%attr(755,root,root) %{_bindir}/v4lgrab
 %attr(755,root,root) %{_bindir}/xc3028-firmware
 %attr(755,root,root) %{_sbindir}/v4l2-dbg
 
@@ -204,6 +199,8 @@ done
 %attr(755,root,root) %{_libdir}/libv4l/ov518-decomp
 %attr(755,root,root) %{_libdir}/libv4l/v4l1compat.so
 %attr(755,root,root) %{_libdir}/libv4l/v4l2convert.so
+%dir %{_libdir}/libv4l/plugins
+%attr(755,root,root) %{_libdir}/libv4l/plugins/libv4l-mplane.so
 
 %files -n libv4l-devel
 %defattr(644,root,root,755)
