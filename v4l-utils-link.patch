@@ -1,0 +1,10 @@
+--- v4l-utils-0.9.5/utils/v4l2-compliance/Makefile.am.orig	2013-01-27 17:00:47.000000000 +0100
++++ v4l-utils-0.9.5/utils/v4l2-compliance/Makefile.am	2013-04-27 07:18:45.175779820 +0200
+@@ -2,6 +2,6 @@
+ v4l2_compliance_SOURCES = v4l2-compliance.cpp v4l2-test-debug.cpp v4l2-test-input-output.cpp \
+ 	v4l2-test-controls.cpp v4l2-test-io-config.cpp v4l2-test-formats.cpp v4l2-test-buffers.cpp \
+ 	v4l2-test-codecs.cpp v4l2-compliance.h
+-v4l2_compliance_LDADD = ../../lib/libv4l2/libv4l2.la ../../lib/libv4lconvert/libv4lconvert.la
++v4l2_compliance_LDADD = ../../lib/libv4l2/libv4l2.la ../../lib/libv4lconvert/libv4lconvert.la -lpthread
+ 
+ EXTRA_DIST = fixme.txt
