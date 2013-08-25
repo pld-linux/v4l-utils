@@ -1,12 +1,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	0.9.5
+Version:	1.0.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	6947bea808b19207d89ec31afc3a9a89
+# Source0-md5:	2127f2d06be9162b0d346f7037a9e852
 Patch0:		%{name}-link.patch
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtCore-devel >= 4.4
@@ -125,7 +125,8 @@ Statyczne biblioteki libv4l.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-silent-rules
+	--disable-silent-rules \
+	--enable-libdvbv5
 %{__make}
 
 %install
