@@ -1,12 +1,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.0.0
+Version:	1.0.1
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	2127f2d06be9162b0d346f7037a9e852
+# Source0-md5:	b06ea8b15e27cff352b4536e835448bc
 Patch0:		%{name}-link.patch
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	QtCore-devel >= 4.4
@@ -38,8 +38,8 @@ Summary:	Qt-based V4L2 test Utility
 Summary(pl.UTF-8):	Narzędzie testowe V4L2 oparte na Qt
 License:	GPL v2+
 Group:		X11/Applications
-Requires:	QtCore-devel >= 4.4
-Requires:	QtGui-devel >= 4.4
+Requires:	QtCore >= 4.4
+Requires:	QtGui >= 4.4
 Requires:	libv4l = %{version}-%{release}
 
 %description qt
