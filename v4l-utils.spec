@@ -1,16 +1,24 @@
+#
+# Conditional build:
+%bcond_without	udev	# using libudev to detect device name
+#
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.0.1
+Version:	1.2.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	b06ea8b15e27cff352b4536e835448bc
+# Source0-md5:	693a47c83373bf3d49b72cc7c2eeec15
 Patch0:		%{name}-link.patch
 URL:		http://hansdegoede.livejournal.com/
+BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	QtCore-devel >= 4.4
 BuildRequires:	QtGui-devel >= 4.4
+BuildRequires:	QtOpenGL-devel >= 4.4
+BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	gettext-devel >= 0.17
@@ -19,6 +27,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	qt4-build >= 4.4
+%{?with_udev:BuildRequires:	udev-devel}
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -126,7 +135,8 @@ Statyczne biblioteki libv4l.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	--enable-libdvbv5
+	--enable-libdvbv5 \
+	%{?with_udev:--with-libudev}
 %{__make}
 
 %install
@@ -168,6 +178,7 @@ done
 %attr(755,root,root) %{_bindir}/dvbv5-scan
 %attr(755,root,root) %{_bindir}/dvbv5-zap
 %attr(755,root,root) %{_bindir}/ivtv-ctl
+%attr(755,root,root) %{_bindir}/media-ctl
 %attr(755,root,root) %{_bindir}/rds-ctl
 %attr(755,root,root) %{_bindir}/rds-saa6588
 %attr(755,root,root) %{_bindir}/v4l2-compliance
@@ -181,6 +192,7 @@ done
 %attr(755,root,root) %{_bindir}/qv4l2
 %{_desktopdir}/qv4l2.desktop
 %{_iconsdir}/hicolor/*/apps/qv4l2.*
+%{_mandir}/man1/qv4l2.1*
 
 %files -n ir-keytable
 %defattr(644,root,root,755)
@@ -222,7 +234,7 @@ done
 %attr(755,root,root) %{_libdir}/libv4l2rds.so
 %attr(755,root,root) %{_libdir}/libv4lconvert.so
 %{_includedir}/libv4l*.h
-%{_includedir}/dvb-*.h
+%{_includedir}/libdvbv5
 %{_pkgconfigdir}/libdvbv5.pc
 %{_pkgconfigdir}/libv4l1.pc
 %{_pkgconfigdir}/libv4l2.pc
