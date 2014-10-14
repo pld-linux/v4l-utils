@@ -5,12 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.4.0
+Version:	1.6.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	7ce03062482b8963694251b45da93f42
+# Source0-md5:	921dab41b8d950fb7d1412e39f48703e
 Patch0:		%{name}-link.patch
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	OpenGL-devel
@@ -186,6 +186,10 @@ done
 %attr(755,root,root) %{_bindir}/v4l2-sysfs-path
 %attr(755,root,root) %{_bindir}/xc3028-firmware
 %attr(755,root,root) %{_sbindir}/v4l2-dbg
+%{_mandir}/man1/dvb-fe-tool.1*
+%{_mandir}/man1/dvb-format-convert.1*
+%{_mandir}/man1/dvbv5-scan.1*
+%{_mandir}/man1/dvbv5-zap.1*
 
 %files qt
 %defattr(644,root,root,755)
