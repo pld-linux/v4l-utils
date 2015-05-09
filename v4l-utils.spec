@@ -5,13 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.6.0
-Release:	2
+Version:	1.6.3
+Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	921dab41b8d950fb7d1412e39f48703e
-Patch0:		%{name}-link.patch
+# Source0-md5:	307858616be6374f63bf946307f15a7f
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -125,7 +124,6 @@ Statyczne biblioteki libv4l.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
