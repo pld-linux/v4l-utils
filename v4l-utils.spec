@@ -5,18 +5,19 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.6.3
+Version:	1.8.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	http://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	307858616be6374f63bf946307f15a7f
+# Source0-md5:	a51e9156410b7a70e07d7e0a54cfdced
 URL:		http://hansdegoede.livejournal.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
-BuildRequires:	QtCore-devel >= 4.4
-BuildRequires:	QtGui-devel >= 4.4
-BuildRequires:	QtOpenGL-devel >= 4.4
+BuildRequires:	Qt5Core-devel >= 5.0
+BuildRequires:	Qt5Gui-devel >= 5.0
+BuildRequires:	Qt5OpenGL-devel >= 5.0
+BuildRequires:	Qt5Widgets-devel >= 5.0
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9
@@ -25,7 +26,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires:	qt4-build >= 4.4
+BuildRequires:	qt5-build >= 5.0
 %{?with_udev:BuildRequires:	udev-devel}
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	libv4l = %{version}-%{release}
@@ -46,8 +47,10 @@ Summary:	Qt-based V4L2 test Utility
 Summary(pl.UTF-8):	Narzędzie testowe V4L2 oparte na Qt
 License:	GPL v2+
 Group:		X11/Applications
-Requires:	QtCore >= 4.4
-Requires:	QtGui >= 4.4
+Requires:	Qt5Core >= 5.0
+Requires:	Qt5Gui >= 5.0
+Requires:	Qt5OpenGL >= 5.0
+Requires:	Qt5Widgets >= 5.0
 Requires:	libv4l = %{version}-%{release}
 
 %description qt
@@ -152,6 +155,9 @@ install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-fir
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/plugins/*.la
 
+%find_lang libdvbv5
+%find_lang v4l-utils
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -166,7 +172,7 @@ done
 %post   -n libv4l -p /sbin/ldconfig
 %postun -n libv4l -p /sbin/ldconfig
 
-%files
+%files -f v4l-utils.lang
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO contrib
 %attr(755,root,root) %{_bindir}/cx18-ctl
@@ -188,6 +194,8 @@ done
 %{_mandir}/man1/dvb-format-convert.1*
 %{_mandir}/man1/dvbv5-scan.1*
 %{_mandir}/man1/dvbv5-zap.1*
+%{_mandir}/man1/v4l2-compliance.1*
+%{_mandir}/man1/v4l2-ctl.1*
 
 %files qt
 %defattr(644,root,root,755)
@@ -205,7 +213,7 @@ done
 %attr(755,root,root) %{_bindir}/ir-keytable
 %{_mandir}/man1/ir-keytable.1*
 
-%files -n libv4l
+%files -n libv4l -f libdvbv5.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libdvbv5.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdvbv5.so.0
