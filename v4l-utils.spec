@@ -5,12 +5,13 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.10.1
+Version:	1.12.5
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	936c9c58343840e91294e4dcec7dc05f
+# Source0-md5:	98ade56409bb1beb665c9cf2e4d99592
+Patch0:		%{name}-link.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -127,6 +128,7 @@ Statyczne biblioteki libv4l.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -175,12 +177,17 @@ done
 %files -f v4l-utils.lang
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO contrib
+%attr(755,root,root) %{_bindir}/cec-compliance
+%attr(755,root,root) %{_bindir}/cec-ctl
+%attr(755,root,root) %{_bindir}/cec-follower
 %attr(755,root,root) %{_bindir}/cx18-ctl
 %attr(755,root,root) %{_bindir}/decode_tm6000
 %attr(755,root,root) %{_bindir}/dvb-fe-tool
 %attr(755,root,root) %{_bindir}/dvb-format-convert
+%attr(755,root,root) %{_bindir}/dvbv5-daemon
 %attr(755,root,root) %{_bindir}/dvbv5-scan
 %attr(755,root,root) %{_bindir}/dvbv5-zap
+%attr(755,root,root) %{_bindir}/ir-ctl
 %attr(755,root,root) %{_bindir}/ivtv-ctl
 %attr(755,root,root) %{_bindir}/media-ctl
 %attr(755,root,root) %{_bindir}/rds-ctl
@@ -190,10 +197,14 @@ done
 %attr(755,root,root) %{_bindir}/v4l2-sysfs-path
 %attr(755,root,root) %{_bindir}/xc3028-firmware
 %attr(755,root,root) %{_sbindir}/v4l2-dbg
+%{_mandir}/man1/cec-compliance.1*
+%{_mandir}/man1/cec-ctl.1*
+%{_mandir}/man1/cec-follower.1*
 %{_mandir}/man1/dvb-fe-tool.1*
 %{_mandir}/man1/dvb-format-convert.1*
 %{_mandir}/man1/dvbv5-scan.1*
 %{_mandir}/man1/dvbv5-zap.1*
+%{_mandir}/man1/ir-ctl.1*
 %{_mandir}/man1/v4l2-compliance.1*
 %{_mandir}/man1/v4l2-ctl.1*
 

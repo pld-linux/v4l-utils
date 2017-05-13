@@ -1,0 +1,11 @@
+--- v4l-utils-1.12.5/lib/libdvbv5/Makefile.am.orig	2017-01-22 21:41:07.000000000 +0100
++++ v4l-utils-1.12.5/lib/libdvbv5/Makefile.am	2017-05-13 23:16:03.448581132 +0200
+@@ -119,7 +119,7 @@
+ 
+ libdvbv5_la_CPPFLAGS = -I../.. $(ENFORCE_LIBDVBV5_STATIC) $(LIBUDEV_CFLAGS)
+ libdvbv5_la_LDFLAGS = $(LIBDVBV5_VERSION) $(ENFORCE_LIBDVBV5_STATIC) $(LIBUDEV_LIBS) -lm -lrt
+-libdvbv5_la_LIBADD = $(LTLIBICONV)
++libdvbv5_la_LIBADD = $(LTLIBICONV) -lpthread
+ 
+ EXTRA_DIST = README gen_dvb_structs.pl
+ 
