@@ -1,0 +1,24 @@
+MAJOR_IN_SYSMACROS, required to include <sys/sysmacros.h>, is defined in config.h
+
+--- v4l-utils-1.14.2/lib/libv4lconvert/control/libv4lcontrol.c.orig	2017-12-27 15:33:07.000000000 +0100
++++ v4l-utils-1.14.2/lib/libv4lconvert/control/libv4lcontrol.c	2018-09-01 20:17:14.554222613 +0200
+@@ -19,6 +19,7 @@
+ # Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
+  */
+ 
++#include "config.h"
+ #include <sys/types.h>
+ #if defined(MAJOR_IN_SYSMACROS)
+ #include <sys/sysmacros.h>
+--- v4l-utils-1.14.2/utils/v4l2-ctl/v4l2-ctl.cpp.orig	2017-12-27 14:50:55.000000000 +0100
++++ v4l-utils-1.14.2/utils/v4l2-ctl/v4l2-ctl.cpp	2018-09-01 20:20:28.890887051 +0200
+@@ -41,6 +41,9 @@
+ #ifdef HAVE_SYS_KLOG_H
+ #include <sys/klog.h>
+ #endif
++#if defined(MAJOR_IN_SYSMACROS)
++#include <sys/sysmacros.h>
++#endif
+ 
+ #include <list>
+ #include <vector>

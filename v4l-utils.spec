@@ -5,13 +5,14 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.12.6
+Version:	1.14.2
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	9805ff48a4d470669b707731386b67c9
+# Source0-md5:	330f265c49122042b2340e4257a5c753
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -106,6 +107,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek libv4l
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Requires:	libv4l = %{version}-%{release}
+%{?with_udev:Requires:	udev-devel}
 
 %description -n libv4l-devel
 Header files for libv4l libraries.
@@ -129,6 +131,7 @@ Statyczne biblioteki libv4l.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -148,8 +151,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install utils/rds/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
-install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
+install contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
+install contrib/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
 
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
