@@ -5,12 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.14.2
+Version:	1.16.2
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	330f265c49122042b2340e4257a5c753
+# Source0-md5:	0b3553854c8b8b0102a823f8e150efbc
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
@@ -23,6 +23,9 @@ BuildRequires:	Qt5Widgets-devel >= 5.0
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9
+# for bpf
+BuildRequires:	clang
+BuildRequires:	elfutils-devel
 BuildRequires:	gettext-tools >= 0.17
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
@@ -45,8 +48,8 @@ własnościowe formaty dostępne w większości kamer internetowych
 (libv4l) oraz testować urządzenia V4L.
 
 %package qt
-Summary:	Qt-based V4L2 test Utility
-Summary(pl.UTF-8):	Narzędzie testowe V4L2 oparte na Qt
+Summary:	Qt-based V4L2 capture and test utilities
+Summary(pl.UTF-8):	Oparte na Qt narzędzia V4L2 do przechwytywania obrazu i testowania
 License:	GPL v2+
 Group:		X11/Applications
 Requires:	Qt5Core >= 5.0
@@ -56,10 +59,11 @@ Requires:	Qt5Widgets >= 5.0
 Requires:	libv4l = %{version}-%{release}
 
 %description qt
-Graphical Qt V4L2 control panel.
+Graphical Qt V4L2 control panel and capture utility.
 
 %description qt -l pl.UTF-8
-Graficzny panel kontrolny V4L2 oparty na Qt.
+Graficzny panel kontrolny V4L2 i narzędzie do przechwytywania obrazu
+oparte na Qt.
 
 %package -n ir-keytable
 Summary:	Alter keymaps of Remote Controller devices
@@ -214,9 +218,13 @@ done
 %files qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/qv4l2
+%attr(755,root,root) %{_bindir}/qvidcap
 %{_desktopdir}/qv4l2.desktop
+%{_desktopdir}/qvidcap.desktop
 %{_iconsdir}/hicolor/*/apps/qv4l2.*
+%{_iconsdir}/hicolor/*/apps/qvidcap.*
 %{_mandir}/man1/qv4l2.1*
+%{_mandir}/man1/qvidcap.1*
 
 %files -n ir-keytable
 %defattr(644,root,root,755)
