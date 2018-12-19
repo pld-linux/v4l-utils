@@ -6,7 +6,7 @@ Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
 Version:	1.16.2
-Release:	1
+Release:	2
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
@@ -36,6 +36,9 @@ BuildRequires:	qt5-build >= 5.0
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# ELF files with some special architecture inside
+%define		_noautostrip	/lib/udev/rc_keymaps/.*
 
 %description
 A series of utilities for media devices, allowing to handle the
@@ -166,6 +169,9 @@ install contrib/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-f
 
 %find_lang libdvbv5
 %find_lang v4l-utils
+
+# for find-debuginfo.sh
+export EXCLUDE_FROM_STRIP="%{_noautostrip}"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
