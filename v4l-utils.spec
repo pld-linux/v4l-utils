@@ -5,12 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.16.6
+Version:	1.18.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	33892600fde632f428b807adda5e7402
+# Source0-md5:	18996bd5e9d83d47055c05de376708cd
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
@@ -26,7 +26,7 @@ BuildRequires:	automake >= 1:1.9
 # for bpf
 BuildRequires:	clang
 BuildRequires:	elfutils-devel
-BuildRequires:	gettext-tools >= 0.17
+BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
@@ -240,6 +240,7 @@ done
 /lib/udev/rules.d/70-infrared.rules
 %attr(755,root,root) %{_bindir}/ir-keytable
 %{_mandir}/man1/ir-keytable.1*
+%{_mandir}/man5/rc_keymap.5*
 
 %files -n libv4l -f libdvbv5.lang
 %defattr(644,root,root,755)
