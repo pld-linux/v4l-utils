@@ -155,7 +155,7 @@ Statyczne biblioteki libv4l.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
