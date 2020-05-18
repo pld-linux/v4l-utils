@@ -5,12 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.18.0
+Version:	1.18.1
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	18996bd5e9d83d47055c05de376708cd
+# Source0-md5:	ff2dd75970683be9a301ed949b3372b3
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
