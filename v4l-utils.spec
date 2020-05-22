@@ -5,12 +5,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.18.1
+Version:	1.20.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	ff2dd75970683be9a301ed949b3372b3
+# Source0-md5:	46f9e2c0b2fdccd009da2f7e1aa87894
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
@@ -20,6 +20,8 @@ BuildRequires:	Qt5Core-devel >= 5.0
 BuildRequires:	Qt5Gui-devel >= 5.0
 BuildRequires:	Qt5OpenGL-devel >= 5.0
 BuildRequires:	Qt5Widgets-devel >= 5.0
+BuildRequires:	SDL2-devel
+BuildRequires:	SDL2_image-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9
@@ -236,6 +238,7 @@ done
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/rc_keymaps
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rc_maps.cfg
+%{systemdunitdir}/systemd-udevd.service.d/50-rc_keymap.conf
 /lib/udev/rc_keymaps
 /lib/udev/rules.d/70-infrared.rules
 %attr(755,root,root) %{_bindir}/ir-keytable
