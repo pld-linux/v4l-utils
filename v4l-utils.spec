@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	qt	# don't build Qt tools
 %bcond_without	udev	# using libudev to detect device name
 #
 Summary:	Collection of Video4Linux utilities
@@ -16,10 +17,13 @@ Patch1:		%{name}-glibc.patch
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
+%if %{with qt}
 BuildRequires:	Qt5Core-devel >= 5.0
 BuildRequires:	Qt5Gui-devel >= 5.0
 BuildRequires:	Qt5OpenGL-devel >= 5.0
 BuildRequires:	Qt5Widgets-devel >= 5.0
+BuildRequires:	qt5-build >= 5.0
+%endif
 BuildRequires:	SDL2-devel
 BuildRequires:	SDL2_image-devel
 BuildRequires:	alsa-lib-devel
@@ -33,7 +37,6 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires:	qt5-build >= 5.0
 %{?with_udev:BuildRequires:	udev-devel}
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	libv4l = %{version}-%{release}
@@ -151,6 +154,10 @@ Statyczne biblioteki libv4l.
 %configure \
 	--disable-silent-rules \
 	--enable-libdvbv5 \
+%if %{without qt}
+	--disable-qv4l2 \
+	--disable-qvidcap \
+%endif
 	%{?with_udev:--with-libudev}
 %{__make}
 
@@ -223,6 +230,7 @@ done
 %{_mandir}/man1/v4l2-compliance.1*
 %{_mandir}/man1/v4l2-ctl.1*
 
+%if %{with qt}
 %files qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/qv4l2
@@ -233,6 +241,7 @@ done
 %{_iconsdir}/hicolor/*/apps/qvidcap.*
 %{_mandir}/man1/qv4l2.1*
 %{_mandir}/man1/qvidcap.1*
+%endif
 
 %files -n ir-keytable
 %defattr(644,root,root,755)
