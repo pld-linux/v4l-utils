@@ -6,14 +6,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.20.0
+Version:	1.22.1
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	46f9e2c0b2fdccd009da2f7e1aa87894
-Patch0:		%{name}-link.patch
-Patch1:		%{name}-glibc.patch
+# Source0-md5:	8aa73287320a49e9170a8255d7b2c7e6
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -33,6 +31,7 @@ BuildRequires:	automake >= 1:1.9
 BuildRequires:	clang
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext-tools >= 0.19.8
+BuildRequires:	libbpf-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
@@ -142,8 +141,6 @@ Statyczne biblioteki libv4l.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
