@@ -37,6 +37,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
+BuildRequires:	systemd-devel
 %{?with_udev:BuildRequires:	udev-devel}
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	libv4l = %{version}-%{release}
