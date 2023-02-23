@@ -6,13 +6,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.22.1
-Release:	2
+Version:	1.24.0
+Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	8aa73287320a49e9170a8255d7b2c7e6
-Patch0:		%{name}-bpf.patch
+# Source0-md5:	a454d640c9eec26098f246d5f52ef438
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -32,7 +31,8 @@ BuildRequires:	automake >= 1:1.9
 BuildRequires:	clang
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	libbpf-devel >= 0.6
+BuildRequires:	json-c-devel >= 0.15
+BuildRequires:	libbpf-devel >= 0.7
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
@@ -40,6 +40,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	systemd-devel
 %{?with_udev:BuildRequires:	udev-devel}
 BuildRequires:	xorg-lib-libX11-devel
+Requires:	json-c >= 0.15
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -143,7 +144,6 @@ Statyczne biblioteki libv4l.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -198,7 +198,7 @@ done
 
 %files -f v4l-utils.lang
 %defattr(644,root,root,755)
-%doc ChangeLog README TODO contrib
+%doc ChangeLog README.md TODO contrib
 %attr(755,root,root) %{_bindir}/cec-compliance
 %attr(755,root,root) %{_bindir}/cec-ctl
 %attr(755,root,root) %{_bindir}/cec-follower
@@ -217,6 +217,7 @@ done
 %attr(755,root,root) %{_bindir}/v4l2-compliance
 %attr(755,root,root) %{_bindir}/v4l2-ctl
 %attr(755,root,root) %{_bindir}/v4l2-sysfs-path
+%attr(755,root,root) %{_bindir}/v4l2-tracer
 %attr(755,root,root) %{_bindir}/xc3028-firmware
 %attr(755,root,root) %{_sbindir}/v4l2-dbg
 %{_mandir}/man1/cec-compliance.1*
@@ -229,6 +230,7 @@ done
 %{_mandir}/man1/ir-ctl.1*
 %{_mandir}/man1/v4l2-compliance.1*
 %{_mandir}/man1/v4l2-ctl.1*
+%{_mandir}/man1/v4l2-tracer.1*
 
 %if %{with qt}
 %files qt
@@ -266,6 +268,7 @@ done
 %attr(755,root,root) %ghost %{_libdir}/libv4l2rds.so.0
 %attr(755,root,root) %{_libdir}/libv4lconvert.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libv4lconvert.so.0
+%attr(755,root,root) %{_libdir}/libv4l2tracer.so
 %attr(755,root,root) %{_libdir}/v4l1compat.so
 %attr(755,root,root) %{_libdir}/v4l2convert.so
 %dir %{_libdir}/libv4l
