@@ -1,6 +1,7 @@
 #
 # Conditional build:
-%bcond_without	qt	# don't build Qt tools
+%bcond_without	qt		# don't build Qt tools
+%bcond_without	static_libs	# static libraries
 #
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
@@ -36,6 +37,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	systemd-devel
 BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
@@ -155,6 +157,7 @@ Statyczne biblioteki libv4l.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	%{__enable_disable static_libs static} \
 	--enable-libdvbv5 \
 %if %{without qt}
 	--disable-qv4l2 \
@@ -305,6 +308,7 @@ done
 %{_pkgconfigdir}/libv4l2rds.pc
 %{_pkgconfigdir}/libv4lconvert.pc
 
+%if %{with static_libs}
 %files -n libv4l-static
 %defattr(644,root,root,755)
 %{_libdir}/libdvbv5.a
@@ -312,3 +316,4 @@ done
 %{_libdir}/libv4l2.a
 %{_libdir}/libv4l2rds.a
 %{_libdir}/libv4lconvert.a
+%endif
