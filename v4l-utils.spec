@@ -1,7 +1,6 @@
 #
 # Conditional build:
 %bcond_without	qt	# don't build Qt tools
-%bcond_without	udev	# using libudev to detect device name
 #
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
@@ -38,7 +37,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	systemd-devel
-%{?with_udev:BuildRequires:	udev-devel}
+BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
 Requires:	json-c >= 0.15
 Requires:	libv4l = %{version}-%{release}
@@ -124,7 +123,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek libv4l
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Requires:	libv4l = %{version}-%{release}
-%{?with_udev:Requires:	udev-devel}
+Requires:	udev-devel
 
 %description -n libv4l-devel
 Header files for libv4l libraries.
@@ -161,7 +160,7 @@ Statyczne biblioteki libv4l.
 	--disable-qv4l2 \
 	--disable-qvidcap \
 %endif
-	%{?with_udev:--with-libudev}
+
 %{__make}
 
 %install
