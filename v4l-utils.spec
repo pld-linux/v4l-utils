@@ -1,3 +1,4 @@
+# TODO: package ARIB-STD-B24 EN300-468-TAB00 gconv modules
 #
 # Conditional build:
 %bcond_without	qt		# don't build Qt tools
@@ -6,12 +7,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.24.1
+Version:	1.26.1
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
-Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	8ba9c73c4319b6afab5fa4358edc43de
+Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.xz
+# Source0-md5:	a3565a8ccc427dcce52845c2b8880c28
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -25,8 +26,6 @@ BuildRequires:	qt5-build >= 5.0
 BuildRequires:	SDL2-devel
 BuildRequires:	SDL2_image-devel
 BuildRequires:	alsa-lib-devel
-BuildRequires:	autoconf >= 2.59
-BuildRequires:	automake >= 1:1.9
 # for bpf
 BuildRequires:	clang
 BuildRequires:	elfutils-devel
@@ -35,12 +34,15 @@ BuildRequires:	json-c-devel >= 0.15
 BuildRequires:	libbpf-devel >= 0.7
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	libtool
+BuildRequires:	meson >= 0.54
+BuildRequires:	ninja
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	systemd-devel
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xz
 Requires:	json-c >= 0.15
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -150,36 +152,23 @@ Statyczne biblioteki libv4l.
 %setup -q
 
 %build
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	%{__enable_disable static_libs static} \
-	--enable-libdvbv5 \
+%meson build \
+	%{!?with_static_libs:--default-library=shared} \
+	-Dlibdvbv5=enabled \
 %if %{without qt}
-	--disable-qv4l2 \
-	--disable-qvidcap \
+	-Dqv4l2=disabled \
+	-Dqvidcap=disabled \
 %endif
 
-%{__make}
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -j1 install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
-install contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
-install contrib/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
-
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
-# dlopened modules
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/*.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libv4l/plugins/*.la
+install build/contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
+install build/contrib/xc3028-firmware/xc3028-firmware $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
 
 %find_lang libdvbv5
 %find_lang v4l-utils
@@ -282,8 +271,6 @@ done
 %attr(755,root,root) %{_libdir}/libv4lconvert.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libv4lconvert.so.0
 %attr(755,root,root) %{_libdir}/libv4l2tracer.so
-%attr(755,root,root) %{_libdir}/v4l1compat.so
-%attr(755,root,root) %{_libdir}/v4l2convert.so
 %dir %{_libdir}/libv4l
 %attr(755,root,root) %{_libdir}/libv4l/ov511-decomp
 %attr(755,root,root) %{_libdir}/libv4l/ov518-decomp
