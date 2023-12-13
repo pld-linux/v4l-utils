@@ -62,10 +62,13 @@ Summary:	Qt-based V4L2 capture and test utilities
 Summary(pl.UTF-8):	Oparte na Qt narzędzia V4L2 do przechwytywania obrazu i testowania
 License:	GPL v2+
 Group:		X11/Applications
+Requires(post,postun):	desktop-file-utils
+Requires(post,postun):	gtk-update-icon-cache
 Requires:	Qt5Core >= 5.0
 Requires:	Qt5Gui >= 5.0
 Requires:	Qt5OpenGL >= 5.0
 Requires:	Qt5Widgets >= 5.0
+Requires:	hicolor-icon-theme
 Requires:	libv4l = %{version}-%{release}
 
 %description qt
@@ -184,6 +187,14 @@ export EXCLUDE_FROM_STRIP="%{_noautostrip}"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post qt
+%update_desktop_database_post
+%update_icon_cache hicolor
+
+%postun qt
+%update_desktop_database_postun
+%update_icon_cache hicolor
 
 # handle transition from libv4l 0.8.x (.so.0 used to be libraries, not symlinks)
 %pretrans -n libv4l
