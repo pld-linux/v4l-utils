@@ -1,4 +1,3 @@
-# TODO: package ARIB-STD-B24 EN300-468-TAB00 gconv modules
 #
 # Conditional build:
 %bcond_without	apidocs		# Doxygen documentation
@@ -163,6 +162,20 @@ API documentation for libv4l libraries.
 %description -n libv4l-apidocs -l pl.UTF-8
 Dokumentacja API biblioteki libv4l.
 
+%package -n iconv-v4l
+Summary:	Conversion modules for TV broadcasting encodings
+Summary(pl.UTF-8):	Moduły konwersji do kodowań używanych w telewizji
+Group:		Libraries
+Requires:	iconv
+
+%description -n iconv-v4l
+Conversion modules for TV broadcasting encodings: ARIB-STD-B24,
+EN300-468-TAB00.
+
+%description -n iconv-v4l -l pl.UTF-8
+Moduły konwersji do kodowań używanych w telewizji: ARIB-STD-B24,
+EN300-468-TAB00.
+
 %prep
 %setup -q
 
@@ -185,6 +198,9 @@ rm -rf $RPM_BUILD_ROOT
 
 install build/contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
 install build/contrib/xc3028-firmware/xc3028-firmware $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
+
+install -d $RPM_BUILD_ROOT%{_libdir}/gconv/gconv-modules.d
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/gconv/gconv-modules $RPM_BUILD_ROOT%{_libdir}/gconv/gconv-modules.d/gconv-modules-v4l.conf
 
 %find_lang libdvbv5
 %find_lang v4l-utils
@@ -213,6 +229,9 @@ done
 
 %post   -n libv4l -p /sbin/ldconfig
 %postun -n libv4l -p /sbin/ldconfig
+
+%posttrans -n iconv-v4l
+%{_sbindir}/iconvconfig --nostdlib -o %{_libdir}/gconv/gconv-modules.cache %{_libdir}/gconv
 
 %files -f v4l-utils.lang
 %defattr(644,root,root,755)
@@ -326,3 +345,9 @@ done
 %defattr(644,root,root,755)
 %{_docdir}/v4l-utils
 %endif
+
+%files -n iconv-v4l
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/gconv/ARIB-STD-B24.so
+%attr(755,root,root) %{_libdir}/gconv/EN300-468-TAB00.so
+%{_libdir}/gconv/gconv-modules.d/gconv-modules-v4l.conf
