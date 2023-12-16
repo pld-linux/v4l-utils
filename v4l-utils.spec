@@ -1,7 +1,8 @@
 # TODO: package ARIB-STD-B24 EN300-468-TAB00 gconv modules
 #
 # Conditional build:
-%bcond_without	qt		# don't build Qt tools
+%bcond_without	apidocs		# Doxygen documentation
+%bcond_without	qt		# Qt (5) based tools
 %bcond_without	static_libs	# static libraries
 #
 Summary:	Collection of Video4Linux utilities
@@ -28,15 +29,17 @@ BuildRequires:	SDL2_image-devel
 BuildRequires:	alsa-lib-devel
 # for bpf
 BuildRequires:	clang
+%{?with_apidocs:BuildRequires:	doxygen >= 1.8.6}
 BuildRequires:	elfutils-devel
 BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	json-c-devel >= 0.15
 BuildRequires:	libbpf-devel >= 0.7
 BuildRequires:	libjpeg-devel
-BuildRequires:	libstdc++-devel
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	meson >= 0.54
 BuildRequires:	ninja
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
@@ -148,12 +151,25 @@ Static libv4l libraries.
 %description -n libv4l-static -l pl.UTF-8
 Statyczne biblioteki libv4l.
 
+%package -n libv4l-apidocs
+Summary:	API documentation for libv4l libraries
+Summary(pl.UTF-8):	Dokumentacja API biblioteki libv4l
+Group:		Documentation
+BuildArch:	noarch
+
+%description -n libv4l-apidocs
+API documentation for libv4l libraries.
+
+%description -n libv4l-apidocs -l pl.UTF-8
+Dokumentacja API biblioteki libv4l.
+
 %prep
 %setup -q
 
 %build
 %meson build \
 	%{!?with_static_libs:--default-library=shared} \
+	%{!?with_apidocs:-Ddoxygen-doc=false} \
 	-Dlibdvbv5=enabled \
 %if %{without qt}
 	-Dqv4l2=disabled \
@@ -303,4 +319,10 @@ done
 %{_libdir}/libv4l2.a
 %{_libdir}/libv4l2rds.a
 %{_libdir}/libv4lconvert.a
+%endif
+
+%if %{with apidocs}
+%files -n libv4l-apidocs
+%defattr(644,root,root,755)
+%{_docdir}/v4l-utils
 %endif
