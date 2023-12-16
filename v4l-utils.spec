@@ -235,7 +235,7 @@ done
 
 %files -f v4l-utils.lang
 %defattr(644,root,root,755)
-%doc ChangeLog README.md TODO contrib
+%doc ChangeLog README.md TODO contrib/{cobalt-ctl,parsers,pci_traffic}
 %attr(755,root,root) %{_bindir}/cec-compliance
 %attr(755,root,root) %{_bindir}/cec-ctl
 %attr(755,root,root) %{_bindir}/cec-follower
