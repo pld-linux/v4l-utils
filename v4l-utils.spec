@@ -1,30 +1,41 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# Doxygen documentation
-%bcond_without	qt		# Qt (5) based tools
+%bcond_without	qt		# Qt (5/6) based tools
+%bcond_with	qt5		# Qt 5 instead of Qt 6
 %bcond_without	static_libs	# static libraries
 #
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.26.1
+Version:	1.28.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.xz
-# Source0-md5:	a3565a8ccc427dcce52845c2b8880c28
+# Source0-md5:	9551b13e088a8b00a7706863ec68f198
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
 %if %{with qt}
+%if %{with qt5}
 BuildRequires:	Qt5Core-devel >= 5.0
 BuildRequires:	Qt5Gui-devel >= 5.0
 BuildRequires:	Qt5OpenGL-devel >= 5.0
 BuildRequires:	Qt5Widgets-devel >= 5.0
 BuildRequires:	qt5-build >= 5.0
+%else
+BuildRequires:	Qt6Core-devel >= 6.0
+BuildRequires:	Qt6Gui-devel >= 6.0
+BuildRequires:	Qt6OpenGL-devel >= 6.0
+BuildRequires:	Qt6Qt5Compat-devel >= 6.0
+BuildRequires:	Qt6Widgets-devel >= 6.0
+BuildRequires:	libstdc++-devel >= 6:7
+BuildRequires:	qt6-build >= 6.0
 %endif
-BuildRequires:	SDL2-devel
-BuildRequires:	SDL2_image-devel
+%endif
+BuildRequires:	SDL2-devel >= 2
+BuildRequires:	SDL2_image-devel >= 2
 BuildRequires:	alsa-lib-devel
 # for bpf
 BuildRequires:	clang
@@ -43,6 +54,8 @@ BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel
+# checked, but not used (in dvb-fe-tool, dvbv5-zap, dvbv5-scan, dvb-format-convert, dvbv5-daemon)
+#BuildRequires:	xmlrpc-c-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
 Requires:	json-c >= 0.15
@@ -178,6 +191,10 @@ EN300-468-TAB00.
 
 %prep
 %setup -q
+
+%if %{with qt5}
+%{__sed} -i -e "/^dep_qt6 = dependency/ s/'qt6'/'qt6-disabled'/" meson.build
+%endif
 
 %build
 %meson build \
