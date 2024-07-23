@@ -3,8 +3,13 @@
 %bcond_without	apidocs		# Doxygen documentation
 %bcond_without	qt		# Qt (5/6) based tools
 %bcond_with	qt5		# Qt 5 instead of Qt 6
+%bcond_without	qvidcap		# Qt video capture viewer (requires desktop GL)
 %bcond_without	static_libs	# static libraries
-#
+
+%if %{without qt}
+%undefine	qvidcap
+%endif
+
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
@@ -201,9 +206,9 @@ EN300-468-TAB00.
 	%{!?with_static_libs:--default-library=shared} \
 	-Ddoxygen-doc=%{__enabled_disabled apidocs} \
 	-Dlibdvbv5=enabled \
+	-Dqvidcap=%{__enabled_disabled qvidcap} \
 %if %{without qt}
 	-Dqv4l2=disabled \
-	-Dqvidcap=disabled \
 %endif
 
 %ninja_build -C build
@@ -290,13 +295,13 @@ done
 %files qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/qv4l2
-%attr(755,root,root) %{_bindir}/qvidcap
+%{?with_qvidcap:%attr(755,root,root) %{_bindir}/qvidcap}
 %{_desktopdir}/qv4l2.desktop
-%{_desktopdir}/qvidcap.desktop
+%{?with_qvidcap:%{_desktopdir}/qvidcap.desktop}
 %{_iconsdir}/hicolor/*/apps/qv4l2.*
-%{_iconsdir}/hicolor/*/apps/qvidcap.*
+%{?with_qvidcap:%{_iconsdir}/hicolor/*/apps/qvidcap.*}
 %{_mandir}/man1/qv4l2.1*
-%{_mandir}/man1/qvidcap.1*
+%{?with_qvidcap:%{_mandir}/man1/qvidcap.1*}
 %endif
 
 %files -n ir-keytable
