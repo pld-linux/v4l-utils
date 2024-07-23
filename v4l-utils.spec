@@ -199,7 +199,7 @@ EN300-468-TAB00.
 %build
 %meson build \
 	%{!?with_static_libs:--default-library=shared} \
-	%{!?with_apidocs:-Ddoxygen-doc=false} \
+	-Ddoxygen-doc=%{__enabled_disabled apidocs} \
 	-Dlibdvbv5=enabled \
 %if %{without qt}
 	-Dqv4l2=disabled \
