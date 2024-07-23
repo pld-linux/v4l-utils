@@ -46,7 +46,7 @@ BuildRequires:	json-c-devel >= 0.15
 BuildRequires:	libbpf-devel >= 0.7
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel >= 6:4.7
-BuildRequires:	meson >= 0.54
+BuildRequires:	meson >= 0.57
 BuildRequires:	ninja
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
