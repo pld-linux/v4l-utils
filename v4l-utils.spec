@@ -205,6 +205,7 @@ EN300-468-TAB00.
 %meson build \
 	%{!?with_static_libs:--default-library=shared} \
 	-Ddoxygen-doc=%{__enabled_disabled apidocs} \
+	-Dgconvsysdir=%{_libdir}/gconv \
 	-Dlibdvbv5=enabled \
 	-Dqvidcap=%{__enabled_disabled qvidcap} \
 %if %{without qt}
@@ -295,13 +296,15 @@ done
 %files qt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/qv4l2
-%{?with_qvidcap:%attr(755,root,root) %{_bindir}/qvidcap}
 %{_desktopdir}/qv4l2.desktop
-%{?with_qvidcap:%{_desktopdir}/qvidcap.desktop}
 %{_iconsdir}/hicolor/*/apps/qv4l2.*
-%{?with_qvidcap:%{_iconsdir}/hicolor/*/apps/qvidcap.*}
 %{_mandir}/man1/qv4l2.1*
-%{?with_qvidcap:%{_mandir}/man1/qvidcap.1*}
+%if %{with qvidcap}
+%attr(755,root,root) %{_bindir}/qvidcap
+%{_desktopdir}/qvidcap.desktop
+%{_iconsdir}/hicolor/*/apps/qvidcap.*
+%{_mandir}/man1/qvidcap.1*
+%endif
 %endif
 
 %files -n ir-keytable
