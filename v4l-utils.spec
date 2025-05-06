@@ -13,12 +13,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.28.1
-Release:	2
+Version:	1.30.1
+Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.xz
-# Source0-md5:	6716de513a1fd2e1edb404a46a455855
+# Source0-md5:	5f85c197e5dd348b2ce49b7007ea63d8
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -51,11 +51,11 @@ BuildRequires:	json-c-devel >= 0.15
 BuildRequires:	libbpf-devel >= 0.7
 BuildRequires:	libjpeg-devel
 BuildRequires:	libstdc++-devel >= 6:4.7
-BuildRequires:	meson >= 0.57
+BuildRequires:	meson >= 0.60
 BuildRequires:	ninja
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel
@@ -205,22 +205,24 @@ EN300-468-TAB00.
 %endif
 
 %build
-%meson build \
+%meson \
 	%{!?with_static_libs:--default-library=shared} \
+	-Dbpf=enabled \
 	-Ddoxygen-doc=%{__enabled_disabled apidocs} \
+	-Dgconv=enabled \
 	-Dgconvsysdir=%{_libdir}/gconv \
+	-Djpeg=enabled \
 	-Dlibdvbv5=enabled \
+	-Dqv4l2=%{__enabled_disabled qt} \
 	-Dqvidcap=%{__enabled_disabled qvidcap} \
-%if %{without qt}
-	-Dqv4l2=disabled \
-%endif
+	-Dv4l2-tracer=enabled
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 install build/contrib/rds-saa6588/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
 install build/contrib/xc3028-firmware/xc3028-firmware $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
@@ -272,6 +274,7 @@ done
 %attr(755,root,root) %{_bindir}/dvbv5-daemon
 %attr(755,root,root) %{_bindir}/dvbv5-scan
 %attr(755,root,root) %{_bindir}/dvbv5-zap
+%attr(755,root,root) %{_bindir}/edid-decode
 %attr(755,root,root) %{_bindir}/ir-ctl
 %attr(755,root,root) %{_bindir}/ivtv-ctl
 %attr(755,root,root) %{_bindir}/media-ctl
@@ -290,6 +293,7 @@ done
 %{_mandir}/man1/dvb-format-convert.1*
 %{_mandir}/man1/dvbv5-scan.1*
 %{_mandir}/man1/dvbv5-zap.1*
+%{_mandir}/man1/edid-decode.1*
 %{_mandir}/man1/ir-ctl.1*
 %{_mandir}/man1/v4l2-compliance.1*
 %{_mandir}/man1/v4l2-ctl.1*
