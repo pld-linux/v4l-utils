@@ -13,12 +13,12 @@
 Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
-Version:	1.30.1
+Version:	1.32.0
 Release:	1
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.xz
-# Source0-md5:	5f85c197e5dd348b2ce49b7007ea63d8
+# Source0-md5:	c484b0320a757bd08a785cad7b32147a
 URL:		https://linuxtv.org/wiki/index.php/V4l-utils
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-GLU-devel
@@ -327,33 +327,33 @@ done
 
 %files -n libv4l -f libdvbv5.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdvbv5.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libdvbv5.so.0
-%attr(755,root,root) %{_libdir}/libv4l1.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libv4l1.so.0
-%attr(755,root,root) %{_libdir}/libv4l2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libv4l2.so.0
-%attr(755,root,root) %{_libdir}/libv4l2rds.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libv4l2rds.so.0
-%attr(755,root,root) %{_libdir}/libv4lconvert.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libv4lconvert.so.0
-%attr(755,root,root) %{_libdir}/libv4l2tracer.so
+%{_libdir}/libdvbv5.so.*.*.*
+%ghost %{_libdir}/libdvbv5.so.0
+%{_libdir}/libv4l1.so.*.*.*
+%ghost %{_libdir}/libv4l1.so.0
+%{_libdir}/libv4l2.so.*.*.*
+%ghost %{_libdir}/libv4l2.so.0
+%{_libdir}/libv4l2rds.so.*.*.*
+%ghost %{_libdir}/libv4l2rds.so.0
+%{_libdir}/libv4lconvert.so.*.*.*
+%ghost %{_libdir}/libv4lconvert.so.0
 %dir %{_libdir}/libv4l
-%attr(755,root,root) %{_libdir}/libv4l/ov511-decomp
-%attr(755,root,root) %{_libdir}/libv4l/ov518-decomp
-%attr(755,root,root) %{_libdir}/libv4l/v4l1compat.so
-%attr(755,root,root) %{_libdir}/libv4l/v4l2convert.so
+%{_libdir}/libv4l/ov511-decomp
+%{_libdir}/libv4l/ov518-decomp
+%{_libdir}/libv4l/v4l1compat.so
+%{_libdir}/libv4l/v4l2convert.so
+%{_libdir}/libv4l/libv4l2tracer.so
 %dir %{_libdir}/libv4l/plugins
-%attr(755,root,root) %{_libdir}/libv4l/plugins/libv4l-mplane.so
+%{_libdir}/libv4l/plugins/libv4l-mplane.so
 
 %files -n libv4l-devel
 %defattr(644,root,root,755)
 %doc README.lib*
-%attr(755,root,root) %{_libdir}/libdvbv5.so
-%attr(755,root,root) %{_libdir}/libv4l1.so
-%attr(755,root,root) %{_libdir}/libv4l2.so
-%attr(755,root,root) %{_libdir}/libv4l2rds.so
-%attr(755,root,root) %{_libdir}/libv4lconvert.so
+%{_libdir}/libdvbv5.so
+%{_libdir}/libv4l1.so
+%{_libdir}/libv4l2.so
+%{_libdir}/libv4l2rds.so
+%{_libdir}/libv4lconvert.so
 %{_includedir}/libv4l*.h
 %{_includedir}/libdvbv5
 %{_pkgconfigdir}/libdvbv5.pc
