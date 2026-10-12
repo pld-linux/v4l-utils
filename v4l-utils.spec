@@ -14,7 +14,7 @@ Summary:	Collection of Video4Linux utilities
 Summary(pl.UTF-8):	Zbiór narzędzi do urządzeń Video4Linux
 Name:		v4l-utils
 Version:	1.32.0
-Release:	2
+Release:	3
 License:	GPL v2+ (utilities), LGPL v2.1+ (libraries)
 Group:		Applications/System
 Source0:	https://linuxtv.org/downloads/v4l-utils/%{name}-%{version}.tar.xz
@@ -63,8 +63,6 @@ BuildRequires:	udev-devel
 #BuildRequires:	xmlrpc-c-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
-# for rm
-Requires(pretrans):	coreutils
 Requires:	json-c >= 0.15
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -248,14 +246,6 @@ rm -rf $RPM_BUILD_ROOT
 %postun qt
 %update_desktop_database_postun
 %update_icon_cache hicolor
-
-# handle transition from libv4l 0.8.x (.so.0 used to be libraries, not symlinks)
-%pretrans -n libv4l
-for f in libv4l1 libv4l2 libv4lconvert ; do
-	if [ ! -h %{_libdir}/${f}.so.0 ]; then
-		rm -f %{_libdir}/${f}.so.0
-	fi
-done
 
 %post   -n libv4l -p /sbin/ldconfig
 %postun -n libv4l -p /sbin/ldconfig
