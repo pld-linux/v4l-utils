@@ -63,6 +63,8 @@ BuildRequires:	udev-devel
 #BuildRequires:	xmlrpc-c-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
+# for rm
+Requires(pretrans):	coreutils
 Requires:	json-c >= 0.15
 Requires:	libv4l = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
